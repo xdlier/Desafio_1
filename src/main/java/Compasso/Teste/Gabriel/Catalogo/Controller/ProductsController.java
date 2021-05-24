@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import Compasso.Teste.Gabriel.Catalogo.Model.Product;
 import Compasso.Teste.Gabriel.Catalogo.Repository.ProductRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value = "API REST Catalogo de Produtos")
 @RestController
 @RequestMapping("/products")
 public class ProductsController {
@@ -25,7 +28,8 @@ public class ProductsController {
 	@Autowired
 	private ProductRepository repository;
 
-	@PostMapping
+	@ApiOperation(value = "Cadastra um produto")
+	@PostMapping(produces = "application/json", params = {"name","description", "price"})
 	public ResponseEntity<Product> create(String name, String description, String price) {
 
 		Product product = new Product();
@@ -37,6 +41,7 @@ public class ProductsController {
 		return ResponseEntity.ok(product);
 	}
 
+	@ApiOperation(value = "Atualiza um produto")
 	@PutMapping("/{id}")
 	public ResponseEntity<Product> edit(@PathVariable(name = "id") String id, String name, String description,
 			String price) {
@@ -55,6 +60,7 @@ public class ProductsController {
 
 	}
 
+	@ApiOperation(value = "Retorna um produto")
 	@GetMapping("/{id}")
 	public ResponseEntity<Product> findById(@PathVariable(name = "id") String id) {
 
@@ -63,6 +69,7 @@ public class ProductsController {
 		return ResponseEntity.ok(product);
 	}
 
+	@ApiOperation(value = "Retorna uma lista de produtos")
 	@GetMapping
 	public ResponseEntity<List<Product>> findAll() {
 
@@ -71,6 +78,7 @@ public class ProductsController {
 
 	}
 
+	@ApiOperation(value = "Retorna uma lista de produtos filtrados")
 	@GetMapping("/search")
 	public ResponseEntity<List<Product>> search(
 			@RequestParam(name = "min_price", required = false, defaultValue = "0.0") BigDecimal min_price,
@@ -82,6 +90,7 @@ public class ProductsController {
 
 	}
 
+	@ApiOperation(value = "Deleta um produto")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteById(@PathVariable(name = "id") String id) {
 
